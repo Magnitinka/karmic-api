@@ -1,27 +1,23 @@
 const express = require('express');
-const router = express.Router();
+const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 
-router.post('/', (req, res) => {
-  const { name, birthdate } = req.body;
+const calcRoutes = require('./routes/calc');
+const paymentRoutes = require('./routes/payment');
+const resultRoutes = require('./routes/result2');   // ← изменено с result на result2
 
-  if (!name || !birthdate) {
-    return res.status(400).json({ error: 'Имя и дата рождения обязательны' });
-  }
+const app = express();
 
-  res.json({
-    free: {
-      lifePath: { number: 1, description: 'Лидер' },
-      soulUrge: { number: 2, description: 'Гармония' },
-      destiny: { number: 3, description: 'Творец' }
-    },
-    paid: {
-      karmicTasks: [
-        { number: 4, description: 'Стабильность' },
-        { number: 5, description: 'Приключения' }
-      ],
-      compatibility: { score: 80, description: 'Высокая совместимость' }
-    }
-  });
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/calc', calcRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/result', resultRoutes);
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
-module.exports = router;
+module.exports = app;
