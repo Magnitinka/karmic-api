@@ -3,6 +3,8 @@ meta:
   toolchain:
     name: npm
     version: 18
+  build:
+    command: npm install
 run:
-  scriptName: src/server.js
+  scriptName: src/services/server.js
   persistenceMount: /data
