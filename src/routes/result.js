@@ -1,28 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
-// Временное хранилище сессий (потом заменим на БД)
-const sessions = new Map();
-
+// Если нужен GET по sessionId – оставляем
 router.get('/:sessionId', (req, res) => {
-  const { sessionId } = req.params;
-  const session = sessions.get(sessionId);
-  
-  if (!session) {
-    return res.status(404).json({ error: 'Сессия не найдена' });
+  res.json({ message: 'Результат пока не готов' });
+});
+
+// Основной POST – для расчёта
+router.post('/', (req, res) => {
+  const { name, birthdate } = req.body;
+  if (!name || !birthdate) {
+    return res.status(400).json({ error: 'Имя и дата обязательны' });
   }
-  
-  if (!session.paid) {
-    return res.status(403).json({ error: 'Доступ запрещён. Расшифровка не оплачена.' });
-  }
-  
-  // Заглушка — позже здесь будет полный результат
+  // Пока заглушка, но уже с нужной структурой
   res.json({
-    sessionId,
-    paid: true,
-    data: {
-      message: 'Полная расшифровка будет здесь после оплаты.',
-      // Здесь будут все данные
+    free: {
+      lifePath: { number: 1, description: 'Лидер' },
+      soulUrge: { number: 2, description: 'Гармония' },
+      destiny: { number: 3, description: 'Творец' }
+    },
+    paid: {
+      karmicTasks: [
+        { number: 4, description: 'Стабильность' },
+        { number: 5, description: 'Приключения' }
+      ],
+      compatibility: { score: 80, description: 'Высокая совместимость' }
     }
   });
 });
