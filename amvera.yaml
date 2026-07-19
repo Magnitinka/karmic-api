@@ -1,8 +1,7 @@
-version: 1
-applications:
-  - name: karmic-api
-    type: nodejs
-    build:
-      command: npm install
-    start:
-      command: node src/services/server.js
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: 18
+run:
+  scriptName: src/server.js
